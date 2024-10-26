@@ -1,0 +1,4 @@
+Requerimientos.txt
+venv
+gestion_app/.env
+gestion_app/.pg_service_conf
