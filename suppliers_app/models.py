@@ -20,8 +20,8 @@ def upload_invoice(instance, filename):
 
 class Invoice(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='invoices')
-    date = models.DateField()
-    value = models.IntegerField()
+    date = models.DateField(blank=True)
+    value = models.IntegerField(blank=True)
     file = models.FileField(upload_to=upload_invoice)
 
     def __str__(self):
