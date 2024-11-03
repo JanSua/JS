@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<h1>Invoices</h1>
+
+{% for invoice in invoices %}
+
+<div>
+    <article>
+        <h2>Company: {{invoice.supplier}}</h2>
+        {% if invoice.paid == False %}
+        <p>Factura Pendiente -🕑- CUIDADO </p>
+        {% else %}
+        <p>Factura Pagada -✅- OK </p>
+        {% endif %}
+        {# Esto no afecta en nada al código y no se verá en html. Backend #}
+        <!--Comentario de html que si aparecerá. FrontEnd-->
+        <p>File: {{invoice.file}}</p>
+        <p>Date: {{invoice.date}}</p>
+        <button>
+            Delete
+        </button>
+        <button>
+            Done
+        </button>
+    </article>
+</div>
+
+{% endfor %}
+
+{% endblock %}

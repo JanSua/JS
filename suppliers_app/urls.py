@@ -7,4 +7,6 @@ urlpatterns = [
     path('hello/<str:username>', views.hello),
     path('suppliers/', views.suppliers),
     path('invoices/', views.invoices),
+    path('create_invoice/', views.create_invoice),
+
 ]

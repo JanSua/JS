@@ -23,6 +23,6 @@ class Invoice(models.Model):
     date = models.DateField(blank=True)
     value = models.IntegerField(blank=True)
     file = models.FileField(upload_to=upload_invoice)
-
+    paid = models.BooleanField(default=False)
     def __str__(self):
         return f"Invoice {self.id} for {self.supplier.CompanyName}"

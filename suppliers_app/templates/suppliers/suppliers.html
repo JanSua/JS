@@ -1,0 +1,16 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+<h1>Suppliers</h1>
+
+{% for supplier in suppliers %}
+
+
+<article>
+    <h1>Name: {{supplier.CompanyName}}</h1>
+</article>
+
+{% endfor %}
+
+{% endblock %}
