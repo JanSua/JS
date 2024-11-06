@@ -1,0 +1,21 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+
+
+<h1>{{supplier}}</h1>
+
+{% for invoice in sup_invoices %}
+<div class="card">
+    <h1>{{invoice.date}}</h1>
+    <h1>{{invoice.value}}</h1>
+</div>
+
+
+
+
+{% endfor %}
+
+
+{% endblock %}

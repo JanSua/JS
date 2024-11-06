@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
 from .models import Supplier, Invoice
-from .forms import CreateNewInvoice
+from .forms import CreateNewInvoice, CreateNewSupplier
 def index(request):
     title = "Welcome Django!!¡¡"
     return render(request, "index.html", {
@@ -40,5 +40,23 @@ def create_invoice(request):
     })
     else:
         Invoice.objects.create(date=request.POST['date'], value=request.POST['value'], file=request.POST['file'], supplier_id = 3)
-        return redirect('/invoices')
+        return redirect('invoices')
     
+def create_supplier(request):
+    if request.method == 'GET':
+        return render(request, "suppliers/create_supplier.html", {
+            'form': CreateNewSupplier()
+            })
+    else:
+        #print(request.POST)
+        supplier = Supplier.objects.create(CompanyName=request.POST["companyName"], CompanyNIT=request.POST["companyNIT"], ContactPerson=request.POST["contactPerson"], Tel1=request.POST["tel1"], Tel2=request.POST["tel2"], Email=request.POST["email"], Ciudad=request.POST["ciudad"], Addrs=request.POST["addrs"], Comment=request.POST["comment"])
+        return redirect('suppliers')
+    
+def supplier_detail(request, id):
+    # supplier = Supplier.objects.get(id=id)
+    supplier = get_object_or_404(Supplier, id=id)
+    sup_invoices = Invoice.objects.filter(supplier_id=id)
+    return render(request, "suppliers/detail.html", {
+        'supplier' : supplier,
+        'sup_invoices' : sup_invoices
+    })

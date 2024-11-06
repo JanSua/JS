@@ -1,8 +1,13 @@
 {% extends 'layouts/base.html' %}
 
+{% load static %}
+
 {% block content %}
 
 <h1>{{ titulo }}</h1>
+
+<img src="{% static 'ring.png' %}" alt="" width="70">
+
 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit doloremque, mollitia sint quidem est omnis distinctio aut maiores qui, ut provident, expedita ab. Voluptas quod tempora alias optio! Eveniet, doloribus!</p>
 
 {% endblock %}

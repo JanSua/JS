@@ -7,8 +7,10 @@
 {% for supplier in suppliers %}
 
 
-<article>
-    <h1>Name: {{supplier.CompanyName}}</h1>
+<article class = "card">
+    <a href="{% url 'supplier_detail' supplier.id %}">
+        <h1>Name: {{supplier.CompanyName}}</h1>
+    </a>
 </article>
 
 {% endfor %}
