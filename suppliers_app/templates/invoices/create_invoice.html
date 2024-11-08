@@ -3,11 +3,13 @@
 {% block content %}
 
 <h1>Creación factura</h1>
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-<button>Save</button>
-</form>
-
+<div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button>Save</button>
+    </form>
+    
+</div>
 
 {% endblock %}

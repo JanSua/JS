@@ -1,11 +1,26 @@
 from django import forms
+from .models import Invoice, Supplier
 
+class CreateNewInvoice(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ['supplier', 'date', 'value', 'file', 'paid']
+        labels = {
+            'supplier': 'Select Supplier',
+            'date': 'Date of Invoice',
+            'value': 'Value of Invoice',
+            'file': 'Upload File',
+            'paid': 'Status of Invoice',
+        }
+        widgets = {
+            'date': forms.DateInput(attrs={'class': 'input', 'type': 'date'}),
+            'value': forms.NumberInput(attrs={'class': 'input'}),
+            'file': forms.FileInput(attrs={'class': 'input'}),
+            'paid': forms.CheckboxInput(attrs={'class': 'input'}),
+        }
+    # Puedes personalizar el campo si quieres
+    supplier = forms.ModelChoiceField(queryset=Supplier.objects.all(), label="Supplier", widget=forms.Select(attrs={'class': 'input'}))
 
-class CreateNewInvoice(forms.Form):
-    date = forms.DateField(label="Date of Invoice", widget = forms.DateInput(attrs={'class':'input'}))
-    value = forms.IntegerField(label="Value of Invoice", widget = forms.NumberInput(attrs={'class':'input'}))
-    file = forms.FileField(label="Upload File", widget = forms.FileInput(attrs={'class':'input'}))
-    # TODO: Make the file save in the specified media folder.
 
 
 class CreateNewSupplier(forms.Form):

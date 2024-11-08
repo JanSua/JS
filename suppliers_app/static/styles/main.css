@@ -1,43 +1,64 @@
 body {
-    background: #202020;
-    color: whitesmoke
+    background: #f4f5fa;
+    color: #333333;
 }
 
 .navbar {
-    background: #404040;
-
+    background: #1e24bc;
 }
 .navbar ul {
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
+    padding-left: 5px;
+    padding: 4px 0;
 }
 .navbar ul li {
     list-style: none;
 }
 .navbar ul li a {
-    color: white;
+    color: #ffffff;
     text-decoration: none;
 }
 .navbar ul li a:hover {
-    color: aquamarine
+    color: #8fc1ff;
 }
 .container {
     max-width: 1200px;
     margin: auto;
     padding: 9px;
 }
+
 .card {
-    background: whitesmoke;
-    color:#404040;
-    padding: 10px 0;
-    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e1e4f0;
+    color: #333333;
+    padding: 8px 0;
+    padding-left: 10px;
+    margin: 7px 0;
+    height: 100px;
+    text-align: center;
+}
+
+.card-link {
+    color: inherit;             /* Usa el color del padre (.card) */
+    text-decoration: none;      /* Elimina el subrayado del enlace */
+    display: flex;              /* Flexbox para centrar verticalmente */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.card-title {
+    font-size: 1.7em;           /* Ajusta el tamaño de fuente */
+    margin: 0;                  /* Elimina margen de <h1> */
 }
 .input {
-    background:gray;
+    background: #d1d5e8;
+    color: #333333;
     padding: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     text-align: center;
     display: block;
-
 }

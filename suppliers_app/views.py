@@ -34,13 +34,17 @@ def invoices(request):
     })
 
 def create_invoice(request):
-    if request.method == 'GET':
-        return render(request, "invoices/create_invoice.html", {
-        'form': CreateNewInvoice()
-    })
+    if request.method == 'POST':
+        form = CreateNewInvoice(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()  # Esto guarda la instancia de Invoice junto con el archivo y proveedor seleccionado
+            return redirect('invoices')
     else:
-        Invoice.objects.create(date=request.POST['date'], value=request.POST['value'], file=request.POST['file'], supplier_id = 3)
-        return redirect('invoices')
+        form = CreateNewInvoice()
+    
+    return render(request, "invoices/create_invoice.html", {
+        'form': form
+    })
     
 def create_supplier(request):
     if request.method == 'GET':

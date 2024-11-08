@@ -1,42 +1,57 @@
-{% load static%}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django Suppliers</title>
-    <link rel="stylesheet" href="{% static '/styles/main.css' %}">
+    <title>Proveedores</title>
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-    <nav class="navbar container">
-        <ul>
-            <li>
-                <a href="{% url 'index' %}">Home</a>
-            </li>
-            <li>
-                <a href="{% url 'about' %}">About</a>
-            </li>
-            <li>
-                <a href="{% url 'suppliers' %}">Suppliers</a>
-            </li>
-            <li>
-                <a href="{% url 'invoices' %}">Invoices</a>
-            </li>
-            <li>
-                <a href="{% url 'create_invoice' %}">Create_Invoice</a>
-            </li>
-            <li>
-                <a href="{% url 'create_supplier' %}">Create_supplier</a>
-            </li>
-        </ul>
+    <!-- Navbar con Bootstrap -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #3845be;">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <img src="{% static 'LogoJS.png' %}" alt="Logo" style="height: 80px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'suppliers' %}">Suppliers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'invoices' %}">Invoices</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create_invoice' %}">Create Invoice</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create_supplier' %}">Create Supplier</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
+
     <main class="container">
         {% block content %}
         {% endblock %}
     </main>
-    
 
+    <!-- Bootstrap JS (si lo necesitas para la funcionalidad de la navbar) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
