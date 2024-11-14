@@ -4,21 +4,22 @@ from .models import Invoice, Supplier
 class CreateNewInvoice(forms.ModelForm):
     class Meta:
         model = Invoice
-        fields = ['supplier', 'date', 'value', 'file', 'paid']
+        fields = ['supplier', 'date', 'totalValue', 'paidValue', 'file', 'paid']
         labels = {
             'supplier': 'Select Supplier',
             'date': 'Date of Invoice',
-            'value': 'Value of Invoice',
+            'totalValue': 'Value of Invoice',
+            'paidValue' : 'Paid value' , 
             'file': 'Upload File',
             'paid': 'Status of Invoice',
         }
         widgets = {
             'date': forms.DateInput(attrs={'class': 'input', 'type': 'date'}),
-            'value': forms.NumberInput(attrs={'class': 'input'}),
+            'totalvalue': forms.NumberInput(attrs={'class': 'input'}),
+            'paidvalue': forms.NumberInput(attrs={'class': 'input'}),
             'file': forms.FileInput(attrs={'class': 'input'}),
             'paid': forms.CheckboxInput(attrs={'class': 'input'}),
         }
-    # Puedes personalizar el campo si quieres
     supplier = forms.ModelChoiceField(queryset=Supplier.objects.all(), label="Supplier", widget=forms.Select(attrs={'class': 'input'}))
 
 

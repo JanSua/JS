@@ -18,11 +18,22 @@ class Supplier(models.Model):
 def upload_invoice(instance, filename):
     return f'invoices/{instance.supplier.CompanyName}/{filename}'
 
+def upload_payment(instance, filename):
+    return f'invoices/{instance.supplier.CompanyName}/{instance.invoice.date}/{filename}'
+
 class Invoice(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='invoices')
     date = models.DateField(blank=True)
-    value = models.IntegerField(blank=True)
+    totalValue = models.IntegerField(default=0)
+    paidValue = models.IntegerField(default=0)
     file = models.FileField(upload_to=upload_invoice)
     paid = models.BooleanField(default=False)
     def __str__(self):
         return f"Invoice {self.id} for {self.supplier.CompanyName}"
+    
+class Payment(models.Model):
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name='payments')
+    date = models.DateField(blank=False, default='2024-01-01')
+    paidValue = models.IntegerField(blank=False, default=0)
+    file = models.FileField(upload_to=upload_payment, blank=True)
+    
