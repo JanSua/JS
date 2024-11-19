@@ -2,17 +2,57 @@
 
 {% block content %}
 
-<h1>Suppliers</h1>
+<h1>Proveedores</h1>
 
-{% for supplier in suppliers %}
-
-
-<article class="card">
-    <a href="{% url 'supplier_detail' supplier.id %}" class="card-link">
-        <h1 class="card-title">Name: {{ supplier.CompanyName }}</h1>
-    </a>
-</article>
-
-{% endfor %}
+<table class="table table-bordered rounded-2">
+    <thead class="table-light text-start align-middle">
+        <tr>
+            <th>Nombre Proveedor</th>
+            <th>NIT</th>
+            <th>Persona de contacto</th>
+            <th>Teléfono</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Ciudad</th>
+            <th>Dirección</th>
+            <th>Comentarios adicionales</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for supplier in suppliers %}
+        <tr>
+            <td>
+                <a href="{% url 'supplier_detail' supplier.id %}">
+                    {{ supplier.CompanyName }}
+                </a>
+            </td>
+            <td>
+                {{ supplier.CompanyNIT }}
+            </td>
+            <td>
+                {{ supplier.ContactPerson }}
+            </td>
+            <td>
+                {{ supplier.Tel1 }}
+            </td>
+            <td>
+                {{ supplier.Tel2 }}
+            </td>
+            <td>
+                {{ supplier.Email }}
+            </td>
+            <td>
+                {{ supplier.Ciudad }}
+            </td>
+            <td>
+                {{ supplier.Addrs }}
+            </td>
+            <td>
+                {{ supplier.Comment }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}
