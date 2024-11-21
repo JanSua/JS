@@ -1,15 +1,55 @@
 {% extends 'layouts/base.html' %}
 
+{% load widget_tweaks %}
+
 {% block content %}
 
-<h1>Creación factura</h1>
-<div>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button>Save</button>
-    </form>
-    
-</div>
+<h1>Creación de Factura</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="row"> <!-- Row para agrupar los campos -->
+        <div class="form-floating mb-3 col-md-4"> <!-- 1er campo: ocupa 1/3 del ancho en pantallas medianas -->
+            {{ form.supplier|add_class:"form-control" }}
+            <label for="{{ form.supplier.id_for_label }}">Proveedor</label>
+        </div>
+
+        <div class="form-floating mb-3 col-md-4"> <!-- 2do campo: ocupa 1/3 del ancho en pantallas medianas -->
+            {{ form.date|add_class:"form-control" }}
+            <label for="{{ form.date.id_for_label }}">Fecha</label>
+        </div>
+
+        <div class="form-floating mb-3 col-md-4"> <!-- 3er campo: ocupa 1/3 del ancho -->
+            {{ form.totalValue|add_class:"form-control" }}
+            <label for="{{ form.totalValue.id_for_label }}">Valor Total</label>
+        </div>
+    </div>
+
+    <div class="row"> <!-- Nueva fila -->
+        <div class="form-floating mb-3 col-md-4"> <!-- Campo "Valor Pagado" -->
+            {{ form.paidValue|add_class:"form-control" }}
+            <label for="{{ form.paidValue.id_for_label }}">Valor Pagado</label>
+        </div>
+
+        <div class="form-floating mb-3 col-md-4"> <!-- Campo "Archivo de Factura" -->
+            {{ form.file|add_class:"form-control" }}
+            <label for="{{ form.file.id_for_label }}">Archivo de Factura</label>
+        </div>
+
+        <div class="form-floating mb-3 col-md-4">
+            <div class="form-check">
+                {{ form.paid }}
+                <label class="form-check-label" for="{{ form.paid.id_for_label }}">
+                    ¿Pagada?
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Guardar
+    </button>
+</form>
 
 {% endblock %}
