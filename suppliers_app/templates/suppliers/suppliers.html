@@ -1,58 +1,110 @@
-{% extends 'layouts/base.html' %}
-
+{% extends 'layouts/base.html' %} 
 {% block content %}
 
 <h1>Proveedores</h1>
 
 <table class="table table-bordered rounded-2">
-    <thead class="table-light text-start align-middle">
-        <tr>
-            <th>Nombre Proveedor</th>
-            <th>NIT</th>
-            <th>Persona de contacto</th>
-            <th>Teléfono</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-            <th>Ciudad</th>
-            <th>Dirección</th>
-            <th>Comentarios adicionales</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for supplier in suppliers %}
-        <tr>
-            <td>
-                <a href="{% url 'supplier_detail' supplier.id %}">
-                    {{ supplier.CompanyName }}
-                </a>
-            </td>
-            <td>
-                {{ supplier.CompanyNIT }}
-            </td>
-            <td>
-                {{ supplier.ContactPerson }}
-            </td>
-            <td>
-                {{ supplier.Tel1 }}
-            </td>
-            <td>
-                {{ supplier.Tel2 }}
-            </td>
-            <td>
-                {{ supplier.Email }}
-            </td>
-            <td>
-                {{ supplier.Ciudad }}
-            </td>
-            <td>
-                {{ supplier.Addrs }}
-            </td>
-            <td>
-                {{ supplier.Comment }}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+  <thead class="table-light text-start align-middle">
+    <tr>
+      <th>
+        Nombre Proveedor 
+        <a href="?sort=CompanyName&order=asc">▲</a>
+        <a href="?sort=CompanyName&order=desc">▼</a>
+      </th>
+      <th class="align-middle">NIT</th>
+      <th class="align-middle">Persona de contacto</th>
+      <th class="align-middle">Teléfono</th>
+      <th class="align-middle">Teléfono</th>
+      <th class="align-middle">Email</th>
+      <th class="align-middle">Ciudad</th>
+      <th class="align-middle">Dirección</th>
+      <th class="align-middle">Comentarios</th>
+      <th class="align-middle">Editar</th>
+      <th class="align-middle">Eliminar</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for supplier in suppliers %}
+    <tr>
+      <td class="align-middle">
+        <a href="{% url 'supplier_detail' supplier.id %}">
+          {{ supplier.CompanyName }}
+        </a>
+      </td>
+      <td class="align-middle">{{ supplier.CompanyNIT }}</td>
+      <td class="align-middle">{{ supplier.ContactPerson }}</td>
+      <td class="align-middle">{{ supplier.Tel1 }}</td>
+      <td class="align-middle">{{ supplier.Tel2 }}</td>
+      <td class="align-middle">{{ supplier.Email }}</td>
+      <td class="align-middle">{{ supplier.Ciudad }}</td>
+      <td class="align-middle">{{ supplier.Addrs }}</td>
+      <td class="align-middle">{{ supplier.Comment }}</td>
+      <td class="align-middle">
+        <a href="{% url 'edit_supplier' supplier.id %}" class="btn btn-warning">
+          Editar
+        </a>
+      </td>
+      <td class="align-middle">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#confirmDeleteModal{{ supplier.id }}"
+        >
+          Delete
+        </button>
+
+        <!-- Modal para este proveedor -->
+        <div
+          class="modal fade"
+          id="confirmDeleteModal{{ supplier.id }}"
+          tabindex="-1"
+          aria-labelledby="confirmDeleteModalLabel{{ supplier.id }}"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5
+                  class="modal-title text-danger"
+                  id="confirmDeleteModalLabel{{ supplier.id }}"
+                >
+                  Confirmar Eliminación
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Cerrar"
+                ></button>
+              </div>
+              <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar al proveedor
+                <strong>{{ supplier.CompanyName }}</strong>?
+              </div>
+              <div class="modal-footer">
+                <form
+                  method="POST"
+                  action="{% url 'supplier_delete' supplier.id %}"
+                >
+                  {% csrf_token %}
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancelar
+                  </button>
+                  <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
 
 {% endblock %}

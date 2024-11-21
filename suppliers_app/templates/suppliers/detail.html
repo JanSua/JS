@@ -2,20 +2,38 @@
 
 {% block content %}
 
+<h1>{{ supplier }}</h1>
 
-
-<h1>{{supplier}}</h1>
-
-{% for invoice in sup_invoices %}
-<div class="card">
-    <li>{{invoice.date}}</li>
-    <li>{{invoice.value}}</l>
-</div>
-
-
-
-
-{% endfor %}
-
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Valor Total</th>
+            <th>Valor Pagado</th>
+            <th>Saldo Restante</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for invoice in sup_invoices %}
+        <tr>
+            <td>{{ invoice.date }}</td>
+            <td>${{ invoice.totalValue }}</td>
+            <td>${{ invoice.paidValue }}</td>
+            <td>${{ invoice.totalValue|add:"-invoice.paidValue" }}</td>  <!-- Cálculo del saldo restante -->
+            <td>
+                <!-- Botón para editar la factura -->
+                <a href="{% url 'edit_invoice' invoice.id %}" class="btn btn-warning btn-sm">Editar</a>
+            
+                <!-- Botón para eliminar la factura -->
+                <form action="{% url 'delete_invoice' invoice.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta factura?')">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}
