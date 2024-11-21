@@ -1,5 +1,6 @@
 body {
-    background-color: red; /* Para probar si el archivo CSS se carga */
+    font-size: 14px; /* Ajustar para "alejar" visualmente */
+    line-height: 1.5;
 }
 
 body {
@@ -8,10 +9,11 @@ body {
     font-family: 'Roboto', sans-serif; 
     }
 
+/* Contenedor principal responsivo */
 .container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 9px;
+    max-width: 100%; /* Se adapta a pantallas pequeñas */
+    overflow-x: auto; /* Scroll horizontal si es necesario */
+    padding: 15px; /* Espaciado interno */
 }
 
 /* Navbar */
@@ -111,6 +113,11 @@ body {
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
+.btn {
+    font-size: 12px; /* Reducir tamaño de texto en botones */
+    white-space: nowrap; /* Evitar que el texto haga saltos de línea */
+    padding: 6px 12px; /* Ajustar el padding para que los botones sean más compactos */
+}
 
 .btn:hover {
     background-color: #1e24bc;
@@ -154,4 +161,67 @@ body {
     top: -0.75rem;
     font-size: 0.875rem;
     color: #007bff;
+}
+
+/* Encabezado con ancho consistente */
+.header {
+    width: 100%; /* Asegura que el encabezado ocupe todo el ancho del contenedor */
+    box-sizing: border-box; /* Incluye padding y bordes dentro del ancho total */
+    padding: 10px 15px; /* Menor espacio interno */
+    background-color: #f4f5fa; /* Fondo similar al body */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 1px solid #ddd; /* Línea ligera */
+    margin-bottom: 20px; /* Separación con la tabla */
+    overflow-x: auto; /* Permite scroll horizontal si el contenido es demasiado ancho */
+}
+
+/* Botón primario dentro del header */
+.btn-primary {
+    background-color: #1e24bc; /* Azul de la paleta */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    white-space: nowrap; /* Evita que el texto del botón haga saltos de línea */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 14px; /* Tamaño compacto pero visible */
+    padding: 8px 12px; /* Menos espacio interno */
+}
+
+.btn-primary:hover {
+    background-color: #1a2d8b;
+    transform: translateY(-2px);
+}
+
+/* Tabla responsiva */
+.table {
+    width: 100%; /* Tabla ocupa el ancho completo del contenedor */
+    border: 1px solid #ddd; /* Bordes coherentes */
+    margin: 0; /* Elimina márgenes que rompan alineación */
+    box-sizing: border-box; /* Incluye bordes en el cálculo del ancho */
+}
+
+.table thead th {
+    white-space: nowrap; /* Evita que los encabezados se desborden */
+}
+
+.table tbody td {
+    word-break: break-word; /* Ajusta texto largo en las celdas */
+    font-size: 13px; /* Texto más pequeño en celdas de la tabla */
+    padding: 8px; /* Reducir espacio interno de las celdas */
+}
+
+@media (max-width: 768px) {
+    .btn-primary {
+        font-size: 12px; /* Aún más pequeño en pantallas pequeñas */
+        padding: 6px 10px; /* Compacto */
+    }
+
+    .header {
+        padding: 8px 12px; /* Menor padding en pantallas pequeñas */
+    }
+
+    .table tbody td {
+        font-size: 12px; /* Texto más pequeño en pantallas pequeñas */
+        padding: 6px; /* Espaciado reducido */
+    }
 }
