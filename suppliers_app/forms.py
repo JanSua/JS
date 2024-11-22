@@ -6,19 +6,17 @@ from crispy_forms.layout import Submit
 class CreateNewInvoice(forms.ModelForm):
     class Meta:
         model = Invoice
-        fields = ['name', 'date', 'totalValue', 'paidValue', 'file', 'paid']
+        fields = ['name', 'date', 'totalValue', 'file', 'paid']
         labels = {
             'name': 'Nombre de Factura',
             'date': 'Fecha de Factura',
-            'totalValue': 'Valor Total',
-            'paidValue': 'Valor Pagado',
+            'totalValue': 'Valor Total (con IVA)',
             'file': 'Subir Archivo',
             'paid': '¿Pagada?',
         }
         widgets = {
             'date': forms.DateInput(attrs={'class': 'input', 'type': 'date'}),
             'totalValue': forms.NumberInput(attrs={'class': 'input'}),
-            'paidValue': forms.NumberInput(attrs={'class': 'input'}),
             'file': forms.FileInput(attrs={'class': 'input'}),
             'paid': forms.CheckboxInput(attrs={'class': 'input'}),
         }
@@ -50,9 +48,9 @@ class CreateNewPayment(forms.ModelForm):
         model = Payment
         fields = ['date', 'file', 'paidValue']
         labels = {
-            'date': 'Date of Payment',
-            'file': 'Upload File',
-            'paidValue' : 'Paid value' , 
+            'date': 'Fecha del pago',
+            'file': 'Cargar archivo',
+            'paidValue' : 'Valor del pago' , 
         }
         widgets = {
             'date': forms.DateInput(attrs={'class': 'input', 'type': 'date'}),

@@ -20,7 +20,7 @@ urlpatterns = [
     path('delete_invoice/<int:id>/', views.delete_invoice, name='delete_invoice'),
     #Payments
     path('create_payment/<int:invoice_id>/', views.create_payment, name='create_payment'),
-    path('delete_payment/<int:id>', views.delete_payment, name="delete_payment"),
+    path('delete_payment/<int:payment_id>/', views.delete_payment, name="delete_payment"),
     
     
     

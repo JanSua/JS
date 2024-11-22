@@ -87,6 +87,10 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
 }
 
+.card-header button {
+    margin-left: auto; /* Asegura que el botón se alinee a la derecha */
+  }
+
 .card:hover {
     transform: translateY(-5px); /* Sube la tarjeta ligeramente al pasar el ratón */
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Aumenta la sombra al pasar el ratón */

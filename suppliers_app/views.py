@@ -179,33 +179,11 @@ def create_payment(request, invoice_id):
 
 #return redirect('supplier_detail', id=invoice.supplier.id)
 
-def delete_payment(request, id):
+def delete_payment(request, payment_id):
     if request.method == "POST":
-        payment = get_object_or_404(Supplier, id=id)
+        payment = get_object_or_404(Payment, id=payment_id)
+        invoice = payment.invoice
         payment.delete()
-        return redirect('supplier_detail', id=id)
+        return redirect('supplier_detail', id=invoice.supplier_id)
     return HttpResponse("Método no permitido", status=405)  
  
-        
-"""
-def create_invoice(request, id=None):
-    if id:
-        # Si hay un ID, significa que estamos editando una factura existente
-        invoice = get_object_or_404(Invoice, id=id)
-    else:
-        # Si no hay ID, estamos creando una nueva factura
-        invoice = None
-
-    if request.method == 'POST':
-        form = CreateNewInvoice(request.POST, request.FILES, instance=invoice)
-        if form.is_valid():
-            form.save()  # Guarda la factura (ya sea nueva o editada)
-            return redirect('invoices')  # Redirige a la lista de facturas
-    else:
-        form = CreateNewInvoice(instance=invoice)  # Si es GET, cargamos la factura para editarla (si existe)
-
-    return render(request, "invoices/create_invoice.html", {
-        'form': form,
-        'invoice': invoice  # Pasamos la factura al contexto (si existe)
-    })
-"""

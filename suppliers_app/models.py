@@ -25,7 +25,7 @@ class Invoice(models.Model):
     date = models.DateField(blank=True)
     totalValue = models.IntegerField(default=0)
     paidValue = models.IntegerField(default=0)
-    file = models.FileField(upload_to=upload_invoice)
+    file = models.FileField(upload_to=upload_invoice, blank=True)
     paid = models.BooleanField(default=False)
     def __str__(self):
         return f"Invoice {self.id} for {self.supplier.CompanyName}"
