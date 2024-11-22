@@ -1,12 +1,12 @@
-{% extends 'layouts/base.html' %}
+{% extends 'layouts/base.html' %} {% block content %} {% load widget_tweaks %}
 
-{% block content %}
-{% load widget_tweaks %}
-  <h1>Crear Pago para la Factura: {{ invoice.name }}</h1>
-
+<div class="container">
+  <h1 class="header d-flex justify-content-between align-items-center">
+    <span>Crear Pago para la Factura: {{ invoice.name }}</span>
+  </h1>
   <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    
+
     <div class="form-group">
       <label for="id_paidValue">Valor Pagado</label>
       {{ form.paidValue|add_class:"form-control" }}
@@ -24,5 +24,6 @@
 
     <button type="submit" class="btn btn-primary">Guardar Pago</button>
   </form>
+</div>
 
 {% endblock %}

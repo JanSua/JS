@@ -1,44 +1,52 @@
-{% extends 'layouts/base.html' %}
+{% extends 'layouts/base.html' %} {% load widget_tweaks %} {% block content %}
 
-{% load widget_tweaks %}
+<div class="container">
+  <h1 class="header d-flex justify-content-between align-items-center">
+    <span>Creación y edición de facturas{{ supplier.name }}</span>
+  </h1>
 
-{% block content %}
-
-<h1>Facturas: {{ supplier.name }}</h1>
-
-<form method="POST" enctype="multipart/form-data">
+  <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
-    <div class="row"> <!-- Row para agrupar los campos -->
-        <div class="form-floating mb-3 col-md-4">
-            {{ form.name|add_class:"form-control" }}
-            <label for="{{ form.name.id_for_label }}">Nombre de Factura (Opcional)</label>
-        </div>
+    <div class="row">
+      <!-- Row para agrupar los campos -->
+      <div class="form-floating mb-3 col-md-4">
+        {{ form.name|add_class:"form-control" }}
+        <label for="{{ form.name.id_for_label }}"
+          >Nombre de Factura (Opcional)</label
+        >
+      </div>
 
-        <div class="form-floating mb-3 col-md-4"> <!-- 2do campo: ocupa 1/3 del ancho en pantallas medianas -->
-            {{ form.date|add_class:"form-control" }}
-            <label for="{{ form.date.id_for_label }}">Fecha de emitida la Factura</label>
-        </div>
+      <div class="form-floating mb-3 col-md-4">
+        <!-- 2do campo: ocupa 1/3 del ancho en pantallas medianas -->
+        {{ form.date|add_class:"form-control" }}
+        <label for="{{ form.date.id_for_label }}"
+          >Fecha de emitida la Factura</label
+        >
+      </div>
 
-        <div class="form-floating mb-3 col-md-4"> <!-- 3er campo: ocupa 1/3 del ancho -->
-            {{ form.totalValue|add_class:"form-control" }}
-            <label for="{{ form.totalValue.id_for_label }}">Valor Total Factura (con IVA)</label>
-        </div>
+      <div class="form-floating mb-3 col-md-4">
+        <!-- 3er campo: ocupa 1/3 del ancho -->
+        {{ form.totalValue|add_class:"form-control" }}
+        <label for="{{ form.totalValue.id_for_label }}"
+          >Valor Total Factura (con IVA)</label
+        >
+      </div>
     </div>
 
-    <div class="row"> <!-- Nueva fila -->
-        <div class="form-floating mb-3 col-md-4">
-            <p></p>
-        </div>
-        <div class="form-floating mb-3 col-md-4"> <!-- Campo "Archivo de Factura" -->
-            {{ form.file|add_class:"form-control" }}
-            <label for="{{ form.file.id_for_label }}">Archivo de la Factura</label>
-        </div>
+    <div class="row">
+      <!-- Nueva fila -->
+      <div class="form-floating mb-3 col-md-4">
+        <p></p>
+      </div>
+      <div class="form-floating mb-3 col-md-4">
+        <!-- Campo "Archivo de Factura" -->
+        {{ form.file|add_class:"form-control" }}
+        <label for="{{ form.file.id_for_label }}">Archivo de la Factura</label>
+      </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        Guardar
-    </button>
-</form>
-
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+</div>
 {% endblock %}

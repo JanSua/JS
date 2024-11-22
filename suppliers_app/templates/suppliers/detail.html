@@ -1,5 +1,6 @@
-{% extends 'layouts/base.html' %} {% block content %} {% load widget_tweaks %}
-
+{% extends 'layouts/base.html' %}
+{% block content %}
+{% load widget_tweaks %}
 <div class="container">
   <h1 class="header d-flex justify-content-between align-items-center">
     <span>Facturas de {{ supplier }}</span>
@@ -9,23 +10,26 @@
   </h1>
 
   {% for invoice in sup_invoices %}
-  <div class="card my-4">
-    <!-- Encabezado de la factura con título y botón de colapsar/expandir -->
+  <!-- Validación para el fondo de la tarjeta con opacidad -->
+  <div class="card my-4"
+      {% if invoice.remaining_value > 0 %}
+        style="background-color: rgba(255, 0, 0, 0.05);" 
+      {% else %}
+        style="background-color: rgba(0, 128, 0, 0.05);" 
+      {% endif %}
+  >
     <div class="card-header d-flex justify-content-between align-items-center">
+      <!-- Título de la factura -->
       <h2 class="h5 mb-0">Factura: {{ invoice.name }}</h2>
-      <button
-        class="btn btn-link"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#invoiceDetails{{ invoice.id }}"
-        aria-expanded="false"
-        aria-controls="invoiceDetails{{ invoice.id }}"
-      >
+
+      <!-- Botón de desplegar/contraer con flecha -->
+      <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#invoiceDetails{{ invoice.id }}" aria-expanded="false" aria-controls="invoiceDetails{{ invoice.id }}">
+        <!-- Icono de la flecha que cambia -->
         <i class="bi bi-chevron-down" id="icon{{ invoice.id }}"></i>
       </button>
     </div>
-    <br />
-    <!-- Contenido que se despliega/contrae -->
+
+    <!-- Contenido que se despliega -->
     <div id="invoiceDetails{{ invoice.id }}" class="collapse">
       <!-- Tabla de la factura -->
       <table class="table table-sm table-striped">
@@ -42,28 +46,17 @@
           <tr>
             <td>{{ invoice.date }}</td>
             <td>${{ invoice.totalValue }}</td>
-            <td>${{ invoice.paidValue }}</td>
-            <td>${{ invoice.totalValue|add:"-invoice.paidValue" }}</td>
+            <td>${{ invoice.paid_value }}</td>
+            <td>${{ invoice.remaining_value }}</td>
             <td>
               <div class="d-flex gap-2">
-                <a
-                  href="{% url 'edit_invoice' supplier.id invoice.id %}"
-                  class="btn btn-warning btn-sm"
-                  >Editar Factura</a
-                >
-                <form
-                  action="{% url 'delete_invoice' invoice.id %}"
-                  method="POST"
-                  style="display: inline"
-                >
+                <!-- Botón para editar la factura -->
+                <a href="{% url 'edit_invoice' supplier.id invoice.id %}" class="btn btn-warning btn-sm">Editar Factura</a>
+
+                <!-- Formulario para eliminar la factura -->
+                <form action="{% url 'delete_invoice' invoice.id %}" method="POST" style="display: inline">
                   {% csrf_token %}
-                  <button
-                    type="submit"
-                    class="btn btn-danger btn-sm"
-                    onclick="return confirm('¿Estás seguro de eliminar esta factura?')"
-                  >
-                    Eliminar Factura
-                  </button>
+                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta factura?')">Eliminar Factura</button>
                 </form>
               </div>
             </td>
@@ -71,29 +64,27 @@
           <tr>
             <td colspan="5">
               {% if invoice.file %}
-              <a href="{{ invoice.file.url }}" target="_blank">Ver archivo</a>
-              {% else %} No hay archivos cargados para visualizar {% endif %}
+                <a href="{{ invoice.file.url }}" target="_blank">Ver archivo</a>
+              {% else %}
+                No hay archivos cargados para visualizar
+              {% endif %}
             </td>
           </tr>
         </tbody>
       </table>
 
-      <!-- Pagos asociados -->
+      <!-- Pagos Asociados -->
       <div class="card-body">
-        <h3 class="h6">
-          Pagos Asociados
-          <a
-            href="{% url 'create_payment' invoice.id %}"
-            class="btn btn-info btn-sm"
-            >Añadir Pago</a
-          >
+        <h3 class="h6">Pagos Asociados
+          <!-- Enlace para crear un pago para esta factura -->
+          <a href="{% url 'create_payment' invoice.id %}" class="btn btn-info btn-sm">Añadir Pago</a>
         </h3>
 
         <table class="table table-sm table-striped">
           <thead>
             <tr>
               <th>Fecha de Pago</th>
-              <th>Valor del Pago</th>
+              <th>Valor Pagado</th>
               <th>Archivo</th>
               <th>Acciones</th>
             </tr>
@@ -105,28 +96,19 @@
               <td>${{ payment.paidValue }}</td>
               <td>
                 {% if payment.file %}
-                <a href="{{ payment.file.url }}" target="_blank">Ver archivo</a>
-                {% else %} No disponible {% endif %}
+                  <a href="{{ payment.file.url }}" target="_blank">Ver archivo</a>
+                {% else %}
+                  No disponible
+                {% endif %}
               </td>
               <td>
-                <a
-                  href="{% url 'create_payment' payment.id %}"
-                  class="btn btn-warning btn-sm"
-                  >Editar Pago</a
-                >
-                <form
-                  action="{% url 'delete_payment' payment.id %}"
-                  method="POST"
-                  style="display: inline"
-                >
+                <!-- Enlace para editar el pago -->
+                <a href="{% url 'create_payment' payment.id %}" class="btn btn-warning btn-sm">Editar Pago</a>
+
+                <!-- Formulario para eliminar el pago -->
+                <form action="{% url 'delete_payment' payment.id %}" method="POST" style="display: inline">
                   {% csrf_token %}
-                  <button
-                    type="submit"
-                    class="btn btn-danger btn-sm"
-                    onclick="return confirm('¿Estás seguro de eliminar este pago?')"
-                  >
-                    Eliminar Pago
-                  </button>
+                  <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este pago?')">Eliminar Pago</button>
                 </form>
               </td>
             </tr>
@@ -143,25 +125,19 @@
   {% endfor %}
 </div>
 
-<!-- Script para cambiar la flecha al hacer clic -->
 <script>
-  document
-    .querySelectorAll('[data-bs-toggle="collapse"]')
-    .forEach(function (toggle) {
-      toggle.addEventListener("click", function () {
-        var icon = document.getElementById(
-          "icon" +
-            this.getAttribute("aria-controls").replace("invoiceDetails", "")
-        );
-        if (icon.classList.contains("bi-chevron-down")) {
-          icon.classList.remove("bi-chevron-down");
-          icon.classList.add("bi-chevron-up");
-        } else {
-          icon.classList.remove("bi-chevron-up");
-          icon.classList.add("bi-chevron-down");
-        }
-      });
+  document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(function (toggle) {
+    toggle.addEventListener('click', function () {
+      var icon = document.getElementById('icon' + this.getAttribute('aria-controls').replace('invoiceDetails', ''));
+      if (icon.classList.contains('bi-chevron-down')) {
+        icon.classList.remove('bi-chevron-down');
+        icon.classList.add('bi-chevron-up');
+      } else {
+        icon.classList.remove('bi-chevron-up');
+        icon.classList.add('bi-chevron-down');
+      }
     });
+  });
 </script>
 
 {% endblock %}

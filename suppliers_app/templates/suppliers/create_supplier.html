@@ -1,90 +1,94 @@
 {% extends 'layouts/base.html' %} {% block content %} {% load forms_extras %}
 
-<h1>
-  {% if editing %}Editar Proveedor{% else %}Creación de Proveedores{% endif %}
-</h1>
 
-<form method="POST">
-  {% csrf_token %}
-
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <div class="form-floating">
-        {{ form.companyName|add_class:"form-control" }}
-        <label for="{{ form.companyName.id_for_label }}">Nombre Compañía</label>
+<div class="container">
+  <h1 class="header d-flex justify-content-between align-items-center">
+    <span>{% if editing %}Editar Proveedor{% else %}Creación de Proveedores{% endif %}</span>
+  </h1>
+  
+  <form method="POST">
+    {% csrf_token %}
+  
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-floating">
+          {{ form.companyName|add_class:"form-control" }}
+          <label for="{{ form.companyName.id_for_label }}">Nombre Compañía</label>
+        </div>
+      </div>
+  
+      <div class="col-md-6">
+        <div class="form-floating">
+          {{ form.companyNIT|add_class:"form-control" }}
+          <label for="{{ form.companyNIT.id_for_label }}">NIT Compañía</label>
+        </div>
       </div>
     </div>
-
-    <div class="col-md-6">
-      <div class="form-floating">
-        {{ form.companyNIT|add_class:"form-control" }}
-        <label for="{{ form.companyNIT.id_for_label }}">NIT Compañía</label>
+  
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-floating">
+          {{ form.contactPerson|add_class:"form-control" }}
+          <label for="{{ form.contactPerson.id_for_label }}"
+            >Persona de Contacto</label
+          >
+        </div>
+      </div>
+  
+      <div class="col-md-6">
+        <div class="form-floating">
+          {{ form.tel1|add_class:"form-control" }}
+          <label for="{{ form.tel1.id_for_label }}">Teléfono 1</label>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <div class="form-floating">
-        {{ form.contactPerson|add_class:"form-control" }}
-        <label for="{{ form.contactPerson.id_for_label }}"
-          >Persona de Contacto</label
-        >
+  
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-floating">
+          {{ form.tel2|add_class:"form-control" }}
+          <label for="{{ form.tel2.id_for_label }}">Teléfono 2</label>
+        </div>
+      </div>
+  
+      <div class="col-md-6">
+        <div class="form-floating">
+          {{ form.email|add_class:"form-control" }}
+          <label for="{{ form.email.id_for_label }}">Email</label>
+        </div>
       </div>
     </div>
-
-    <div class="col-md-6">
-      <div class="form-floating">
-        {{ form.tel1|add_class:"form-control" }}
-        <label for="{{ form.tel1.id_for_label }}">Teléfono 1</label>
+  
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-floating">
+          {{ form.ciudad|add_class:"form-control" }}
+          <label for="{{ form.ciudad.id_for_label }}">Ciudad</label>
+        </div>
+      </div>
+  
+      <div class="col-md-6">
+        <div class="form-floating">
+          {{ form.addrs|add_class:"form-control" }}
+          <label for="{{ form.addrs.id_for_label }}">Dirección</label>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <div class="form-floating">
-        {{ form.tel2|add_class:"form-control" }}
-        <label for="{{ form.tel2.id_for_label }}">Teléfono 2</label>
+  
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="form-floating">
+          {{ form.comment|add_class:"form-control" }}
+          <label for="{{ form.comment.id_for_label }}">Comentarios</label>
+        </div>
       </div>
     </div>
+  
+    <button type="submit" class="btn btn-primary">
+      {% if editing %}Guardar Cambios{% else %}Guardar{% endif %}
+    </button>
+  </form>
+</div>
 
-    <div class="col-md-6">
-      <div class="form-floating">
-        {{ form.email|add_class:"form-control" }}
-        <label for="{{ form.email.id_for_label }}">Email</label>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <div class="form-floating">
-        {{ form.ciudad|add_class:"form-control" }}
-        <label for="{{ form.ciudad.id_for_label }}">Ciudad</label>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <div class="form-floating">
-        {{ form.addrs|add_class:"form-control" }}
-        <label for="{{ form.addrs.id_for_label }}">Dirección</label>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-12">
-      <div class="form-floating">
-        {{ form.comment|add_class:"form-control" }}
-        <label for="{{ form.comment.id_for_label }}">Comentarios</label>
-      </div>
-    </div>
-  </div>
-
-  <button type="submit" class="btn btn-primary">
-    {% if editing %}Guardar Cambios{% else %}Guardar{% endif %}
-  </button>
-</form>
 
 {% endblock %}

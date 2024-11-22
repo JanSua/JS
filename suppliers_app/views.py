@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
+from django.db.models import Sum
 from .models import Supplier, Invoice, Payment #Modelos
 from .forms import CreateNewInvoice, CreateNewSupplier, CreateNewPayment
 def index(request):
@@ -139,9 +140,25 @@ def create_supplier(request, supplier_id=None):
 
 
 def supplier_detail(request, id):
+    # Obtener el proveedor por su ID
     supplier = get_object_or_404(Supplier, id=id)
-    # Prefetch pagos relacionados con cada factura
+
+    # Obtener las facturas del proveedor, incluyendo los pagos relacionados
     sup_invoices = Invoice.objects.filter(supplier_id=id).prefetch_related('payments')
+
+    # Iterar sobre las facturas y calcular los valores pagado y restante
+    for invoice in sup_invoices:
+        # Sumar el valor total de los pagos asociados con la factura
+        total_paid = invoice.payments.aggregate(total_paid=Sum('paidValue'))['total_paid'] or 0
+        
+        # Calcular el valor restante
+        remaining_value = invoice.totalValue - total_paid
+        
+        # Asignar estos valores al objeto invoice
+        invoice.paid_value = total_paid
+        invoice.remaining_value = remaining_value
+
+    # Pasar la información a la plantilla
     return render(request, "suppliers/detail.html", {
         'supplier': supplier,
         'sup_invoices': sup_invoices
