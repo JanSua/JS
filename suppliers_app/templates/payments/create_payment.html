@@ -1,0 +1,28 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+{% load widget_tweaks %}
+  <h1>Crear Pago para la Factura: {{ invoice.name }}</h1>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="form-group">
+      <label for="id_paidValue">Valor Pagado</label>
+      {{ form.paidValue|add_class:"form-control" }}
+    </div>
+
+    <div class="form-group">
+      <label for="id_date">Fecha de Pago</label>
+      {{ form.date|add_class:"form-control" }}
+    </div>
+
+    <div class="form-group">
+      <label for="id_file">Archivo de Pago</label>
+      {{ form.file|add_class:"form-control" }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Pago</button>
+  </form>
+
+{% endblock %}

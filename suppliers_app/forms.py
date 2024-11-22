@@ -1,28 +1,28 @@
 from django import forms
-from .models import Invoice, Supplier
+from .models import Invoice, Supplier, Payment
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
 class CreateNewInvoice(forms.ModelForm):
     class Meta:
         model = Invoice
-        fields = ['supplier', 'date', 'totalValue', 'paidValue', 'file', 'paid']
+        fields = ['name', 'date', 'totalValue', 'paidValue', 'file', 'paid']
         labels = {
-            'supplier': 'Select Supplier',
-            'date': 'Date of Invoice',
-            'totalValue': 'Value of Invoice',
-            'paidValue' : 'Paid value' , 
-            'file': 'Upload File',
-            'paid': 'Status of Invoice',
+            'name': 'Nombre de Factura',
+            'date': 'Fecha de Factura',
+            'totalValue': 'Valor Total',
+            'paidValue': 'Valor Pagado',
+            'file': 'Subir Archivo',
+            'paid': '¿Pagada?',
         }
         widgets = {
             'date': forms.DateInput(attrs={'class': 'input', 'type': 'date'}),
-            'totalvalue': forms.NumberInput(attrs={'class': 'input'}),
-            'paidvalue': forms.NumberInput(attrs={'class': 'input'}),
+            'totalValue': forms.NumberInput(attrs={'class': 'input'}),
+            'paidValue': forms.NumberInput(attrs={'class': 'input'}),
             'file': forms.FileInput(attrs={'class': 'input'}),
             'paid': forms.CheckboxInput(attrs={'class': 'input'}),
         }
-    supplier = forms.ModelChoiceField(queryset=Supplier.objects.all(), label="Supplier", widget=forms.Select(attrs={'class': 'input'}))
+    #supplier = forms.ModelChoiceField(queryset=Supplier.objects.all(), label="Supplier", widget=forms.Select(attrs={'class': 'input'}))
 
 
 
@@ -45,3 +45,15 @@ class CreateNewSupplier(forms.Form):
         self.helper.field_class = 'col-md-9'
         self.helper.add_input(Submit('submit', 'Guardar'))
 
+class CreateNewPayment(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['date', 'file', 'paidValue']
+        labels = {
+            'date': 'Date of Payment',
+            'file': 'Upload File',
+            'paidValue' : 'Paid value' , 
+        }
+        widgets = {
+            'date': forms.DateInput(attrs={'class': 'input', 'type': 'date'}),
+        }

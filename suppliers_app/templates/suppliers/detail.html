@@ -1,39 +1,81 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
+{% load widget_tweaks %}
+<div class="container">
+    <h1 class="header d-flex justify-content-between align-items-center">
+        <span>Facturas de {{ supplier }}</span>
+        <a href="{% url 'create_invoice' supplier.id %}" class="btn btn-primary">Añadir nueva factura</a>
+    </h1>
 
-<h1>{{ supplier }}</h1>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Fecha</th>
-            <th>Valor Total</th>
-            <th>Valor Pagado</th>
-            <th>Saldo Restante</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for invoice in sup_invoices %}
-        <tr>
-            <td>{{ invoice.date }}</td>
-            <td>${{ invoice.totalValue }}</td>
-            <td>${{ invoice.paidValue }}</td>
-            <td>${{ invoice.totalValue|add:"-invoice.paidValue" }}</td>  <!-- Cálculo del saldo restante -->
-            <td>
+    {% for invoice in sup_invoices %}
+    <div class="card my-4">
+        <div class="card-header">
+            <h2 class="h5">Factura: {{ invoice.name }}</h2>
+            <p>
+                Fecha: {{ invoice.date }} <br>
+                Valor Total: ${{ invoice.totalValue }} <br>
+                Valor Pagado: ${{ invoice.paidValue }} <br>
+                Saldo Restante: ${{ invoice.totalValue|add:"-invoice.paidValue" }}
+            </p>
+            <div class="d-flex gap-2">
                 <!-- Botón para editar la factura -->
-                <a href="{% url 'edit_invoice' invoice.id %}" class="btn btn-warning btn-sm">Editar</a>
-            
-                <!-- Botón para eliminar la factura -->
+                <a href="{% url 'edit_invoice' supplier.id invoice.id %}" class="btn btn-warning btn-sm">Editar Factura</a>
+                
+                <!-- Formulario para eliminar la factura -->
                 <form action="{% url 'delete_invoice' invoice.id %}" method="POST" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta factura?')">Eliminar</button>
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta factura?')">Eliminar Factura</button>
                 </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+                
+                <!-- Enlace para crear un pago para esta factura -->
+                <a href="{% url 'create_payment' invoice.id %}" class="btn btn-info btn-sm">Añadir Pago</a>
+            </div>
+        </div>
 
+        <div class="card-body">
+            <h3 class="h6">Pagos Asociados</h3>
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>Fecha de Pago</th>
+                        <th>Valor Pagado</th>
+                        <th>Archivo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in invoice.payments.all %}
+                    <tr>
+                        <td>{{ payment.date }}</td>
+                        <td>${{ payment.paidValue }}</td>
+                        <td>
+                            {% if payment.file %}
+                            <a href="{{ payment.file.url }}" target="_blank">Ver archivo</a>
+                            {% else %}
+                            No disponible
+                            {% endif %}
+                        </td>
+                        <td>
+                            <!-- Enlace para editar el pago -->
+                            <a href="{% url 'create_payment' payment.id %}" class="btn btn-warning btn-sm">Editar Pago</a>
+                            
+                            <!-- Formulario para eliminar el pago -->
+                            <form action="{% url 'delete_payment' payment.id %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este pago?')">Eliminar Pago</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No hay pagos registrados para esta factura.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

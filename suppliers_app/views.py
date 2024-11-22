@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, JsonResponse
-from .models import Supplier, Invoice
-from .forms import CreateNewInvoice, CreateNewSupplier
+from .models import Supplier, Invoice, Payment #Modelos
+from .forms import CreateNewInvoice, CreateNewSupplier, CreateNewPayment
 def index(request):
     title = "Welcome Django!!¡¡"
     return render(request, "index.html", {
@@ -44,10 +44,12 @@ def invoices(request):
         'invoices': invoices
     })
 
-def create_invoice(request, id=None):
+def create_invoice(request, supplier_id, id=None):
+    supplier = get_object_or_404(Supplier, id=supplier_id)  # Obtén el proveedor
+
     if id:
         # Si hay un ID, significa que estamos editando una factura existente
-        invoice = get_object_or_404(Invoice, id=id)
+        invoice = get_object_or_404(Invoice, id=id, supplier=supplier)
     else:
         # Si no hay ID, estamos creando una nueva factura
         invoice = None
@@ -55,15 +57,25 @@ def create_invoice(request, id=None):
     if request.method == 'POST':
         form = CreateNewInvoice(request.POST, request.FILES, instance=invoice)
         if form.is_valid():
-            form.save()  # Guarda la factura (ya sea nueva o editada)
-            return redirect('invoices')  # Redirige a la lista de facturas
+            invoice = form.save(commit=False)
+            invoice.supplier = supplier  # Asocia la factura al proveedor
+            invoice.save()  # Guarda la factura
+            return redirect('supplier_detail', id=supplier.id)  # Redirige al detalle del proveedor
+        else:
+            # Imprimir los errores del formulario para depuración
+            print("Errores en el formulario:", form.errors)
     else:
-        form = CreateNewInvoice(instance=invoice)  # Si es GET, cargamos la factura para editarla (si existe)
+        form = CreateNewInvoice(instance=invoice)
 
     return render(request, "invoices/create_invoice.html", {
         'form': form,
-        'invoice': invoice  # Pasamos la factura al contexto (si existe)
+        'invoice': invoice,
+        'supplier': supplier  # Pasamos el proveedor al contexto
     })
+
+
+
+
 
 def delete_invoice(request, id):
     # Buscar la factura a eliminar
@@ -127,12 +139,12 @@ def create_supplier(request, supplier_id=None):
 
 
 def supplier_detail(request, id):
-    # supplier = Supplier.objects.get(id=id)
     supplier = get_object_or_404(Supplier, id=id)
-    sup_invoices = Invoice.objects.filter(supplier_id=id)
+    # Prefetch pagos relacionados con cada factura
+    sup_invoices = Invoice.objects.filter(supplier_id=id).prefetch_related('payments')
     return render(request, "suppliers/detail.html", {
-        'supplier' : supplier,
-        'sup_invoices' : sup_invoices
+        'supplier': supplier,
+        'sup_invoices': sup_invoices
     })
     
 def delete_supplier(request, id):
@@ -141,3 +153,59 @@ def delete_supplier(request, id):
         supplier.delete()
         return redirect('suppliers')
     return HttpResponse("Método no permitido", status=405)  
+
+def create_payment(request, invoice_id):
+    # Obtener la factura a partir de su ID
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+
+    if request.method == 'POST':
+        # Crear un formulario con los datos del POST
+        form = CreateNewPayment(request.POST, request.FILES)
+        if form.is_valid():
+            # Si el formulario es válido, guardamos el pago pero no lo commitimos inmediatamente
+            payment = form.save(commit=False)
+            # Relacionamos el pago con la factura
+            payment.invoice = invoice
+            payment.save()  # Guardamos el pago en la base de datos
+            return redirect('supplier_detail', id=invoice.supplier.id)
+    else:
+        # Si el método es GET, simplemente mostramos el formulario vacío
+        form = CreateNewPayment()
+
+    return render(request, 'payments/create_payment.html', {
+        'form': form,
+        'invoice': invoice  # Pasamos la factura al contexto para usarla en el template
+    })
+
+#return redirect('supplier_detail', id=invoice.supplier.id)
+
+def delete_payment(request, id):
+    if request.method == "POST":
+        payment = get_object_or_404(Supplier, id=id)
+        payment.delete()
+        return redirect('supplier_detail', id=id)
+    return HttpResponse("Método no permitido", status=405)  
+ 
+        
+"""
+def create_invoice(request, id=None):
+    if id:
+        # Si hay un ID, significa que estamos editando una factura existente
+        invoice = get_object_or_404(Invoice, id=id)
+    else:
+        # Si no hay ID, estamos creando una nueva factura
+        invoice = None
+
+    if request.method == 'POST':
+        form = CreateNewInvoice(request.POST, request.FILES, instance=invoice)
+        if form.is_valid():
+            form.save()  # Guarda la factura (ya sea nueva o editada)
+            return redirect('invoices')  # Redirige a la lista de facturas
+    else:
+        form = CreateNewInvoice(instance=invoice)  # Si es GET, cargamos la factura para editarla (si existe)
+
+    return render(request, "invoices/create_invoice.html", {
+        'form': form,
+        'invoice': invoice  # Pasamos la factura al contexto (si existe)
+    })
+"""

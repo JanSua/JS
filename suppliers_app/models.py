@@ -21,6 +21,7 @@ def upload_invoice(instance, filename):
 
 class Invoice(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='invoices')
+    name = models.CharField(max_length=80, default="Factura", blank=True)  # Campo obligatorio
     date = models.DateField(blank=True)
     totalValue = models.IntegerField(default=0)
     paidValue = models.IntegerField(default=0)
@@ -30,7 +31,7 @@ class Invoice(models.Model):
         return f"Invoice {self.id} for {self.supplier.CompanyName}"
     
 def upload_payment(instance, filename):
-    return f'invoices/{instance.supplier.CompanyName}/{instance.invoice.date}/{filename}'
+    return f'invoices/{instance.invoice.supplier.CompanyName}/{instance.invoice.date}/{filename}'
 
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name='payments')
